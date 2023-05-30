@@ -1,4 +1,4 @@
-package com.plcoding.mvvmtodoapp.ui.todo_list
+package com.example.dailytasks.ui.todo_list
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

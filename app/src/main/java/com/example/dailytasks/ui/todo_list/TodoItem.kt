@@ -1,4 +1,4 @@
-package com.plcoding.mvvmtodoapp.ui.todo_list
+package com.example.dailytasks.ui.todo_list
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
