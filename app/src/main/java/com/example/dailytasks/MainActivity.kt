@@ -23,8 +23,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DailyTasksTheme {
-
-
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
