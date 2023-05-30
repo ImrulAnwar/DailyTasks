@@ -16,7 +16,7 @@ import javax.inject.Inject
 class TodoListViewModel @Inject constructor(private val repository: TodoRepository): ViewModel(){
     private val _uiEvent =  Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
+    val todos = repository.getAllTodo()
     private var deletedTodo: Todo? = null
 
     fun onEvent(event: TodoListEvent) {
