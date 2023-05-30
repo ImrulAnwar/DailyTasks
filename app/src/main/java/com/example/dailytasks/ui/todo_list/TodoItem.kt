@@ -25,11 +25,6 @@ fun TodoItem(
     onEvent: (TodoListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        Color.Black
-    } else {
-        Color.White
-    }
     Row(
         modifier = modifier.padding(10.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -47,13 +42,20 @@ fun TodoItem(
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                IconButton(onClick = {
-                    onEvent(TodoListEvent.OnDeleteTodoClick(todo))
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete"
-                    )
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    IconButton(
+                        onClick = {
+                            onEvent(TodoListEvent.OnDeleteTodoClick(todo))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete"
+                        )
+                    }
                 }
             }
             todo.description?.let {

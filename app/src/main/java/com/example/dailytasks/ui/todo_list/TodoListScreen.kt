@@ -5,22 +5,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,12 +38,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.dailytasks.ui.todo_list.TodoListEvent
 import com.example.dailytasks.ui.todo_list.TodoListViewModel
 import com.example.dailytasks.util.UiEvent
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.dailytasks.ui.theme.myThemeColor
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -65,38 +74,55 @@ fun TodoListScreen(
             }
         }
     }
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        floatingActionButtonPosition = FabPosition.Center,
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    viewModel.onEvent(TodoListEvent.OnAddTodoClick)
-                },
-                contentColor = Color.White,
-                containerColor = myThemeColor
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add",
+    Column(Modifier.fillMaxSize()){
+        TopAppBar(
+            title = {
+                Text(
+                    text = "All Tasks    ",
+                    modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally),
+                    fontSize = 40.sp
                 )
+            },
+            navigationIcon = {
+                IconButton(onClick = { /* Handle navigation icon click */ }) {
+                    Icon(Icons.Default.Menu, contentDescription = "Menu")
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            floatingActionButtonPosition = FabPosition.Center,
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        viewModel.onEvent(TodoListEvent.OnAddTodoClick)
+                    },
+                    contentColor = Color.White,
+                    containerColor = myThemeColor
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add",
+                    )
+                }
             }
-        }
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
         ) {
-            items(todos.value) { todo ->
-                TodoItem(
-                    todo = todo,
-                    onEvent = viewModel::onEvent,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            viewModel.onEvent(TodoListEvent.OnTodoClick(todo))
-                        }
-                        .padding(16.dp)
-                )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(todos.value) { todo ->
+                    TodoItem(
+                        todo = todo,
+                        onEvent = viewModel::onEvent,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                viewModel.onEvent(TodoListEvent.OnTodoClick(todo))
+                            }
+                            .padding(16.dp)
+                    )
+                }
             }
         }
     }
