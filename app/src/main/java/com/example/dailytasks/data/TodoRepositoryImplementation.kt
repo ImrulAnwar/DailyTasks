@@ -12,10 +12,10 @@ class TodoRepositoryImplementation(private val dao: TodoDao): TodoRepository{
     }
 
     override suspend fun getTodoById(id: Int): Todo? {
-        return getTodoById(id)
+        return dao.getTodoById(id)
     }
 
     override fun getAllTodo(): Flow<List<Todo>> {
-        return getAllTodo()
+        return dao.getAllTodo()
     }
 }
