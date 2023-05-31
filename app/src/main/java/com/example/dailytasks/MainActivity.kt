@@ -1,10 +1,13 @@
 package com.example.dailytasks
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen
@@ -28,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: TodoListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_DailyTasks)
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setKeepOnScreenCondition { viewModel.isLoading.value }
