@@ -39,11 +39,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,29 +78,39 @@ fun TodoListScreen(
 ) {
     val todos = viewModel.todos.collectAsState(initial = emptyList())
     val snackbarHostState = remember { SnackbarHostState() }
+    var snackbarDismissed = false
+
     changeStatusBarColor()
+
     LaunchedEffect(snackbarHostState) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.ShowSnackbar -> {
-                    val snackbarResult = snackbarHostState.showSnackbar(
-                        message = event.message,
-                        actionLabel = event.action,
-                        duration = SnackbarDuration.Short
-                    )
-                    if (snackbarResult == SnackbarResult.ActionPerformed) {
-                        // Undo button clicked, handle the event
-                        viewModel.onEvent(TodoListEvent.OnUndoDeleteClick)
+                    if (!snackbarDismissed) {
+                        val snackbarResult = snackbarHostState.showSnackbar(
+                            message = event.message,
+                            actionLabel = event.action,
+                            duration = SnackbarDuration.Short
+                        )
+                        if (snackbarResult == SnackbarResult.ActionPerformed) {
+                            // Undo button clicked, handle the event
+                            viewModel.onEvent(TodoListEvent.OnUndoDeleteClick)
+                            snackbarDismissed = true // Set the flag to true
+                        }
+                    } else {
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarDismissed = false
                     }
                 }
                 is UiEvent.Navigate -> onNavigate(event)
                 else -> Unit
             }
         }
-
-        delay(3000)
-        snackbarHostState.currentSnackbarData?.dismiss()
     }
+
+
+
+
 
 
     Column(Modifier.fillMaxSize()){

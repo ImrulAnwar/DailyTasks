@@ -65,6 +65,8 @@ class TodoListViewModel @Inject constructor(private val repository: TodoReposito
                     )
                 }
             }
+
+            else -> {}
         }
     }
     private fun sendUiEvent(event: UiEvent) {
