@@ -61,22 +61,6 @@ fun TodoItem(
                     fontWeight = FontWeight.Bold,
                     color = textColor
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    IconButton(
-                        onClick = {
-                            onEvent(TodoListEvent.OnDeleteTodoClick(todo))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete"
-                        )
-                    }
-                }
             }
             todo.description?.let {
                 Spacer(modifier = Modifier.height(8.dp))

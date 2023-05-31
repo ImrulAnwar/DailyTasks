@@ -27,6 +27,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -58,6 +59,7 @@ import com.example.dailytasks.ui.todo_list.TodoListViewModel
 import com.example.dailytasks.util.UiEvent
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.dailytasks.ui.theme.myThemeColor
+import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
 
@@ -71,15 +73,17 @@ fun TodoListScreen(
     val todos = viewModel.todos.collectAsState(initial = emptyList())
     val snackbarHostState = remember { SnackbarHostState() }
     changeStatusBarColor()
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(snackbarHostState) {
         viewModel.uiEvent.collect { event ->
-            when(event) {
+            when (event) {
                 is UiEvent.ShowSnackbar -> {
-                    val result = snackbarHostState.showSnackbar(
+                    val snackbarResult = snackbarHostState.showSnackbar(
                         message = event.message,
-                        actionLabel = event.action
+                        actionLabel = event.action,
+                        duration = SnackbarDuration.Short
                     )
-                    if(result == SnackbarResult.ActionPerformed) {
+                    if (snackbarResult == SnackbarResult.ActionPerformed) {
+                        // Undo button clicked, handle the event
                         viewModel.onEvent(TodoListEvent.OnUndoDeleteClick)
                     }
                 }
@@ -87,7 +91,12 @@ fun TodoListScreen(
                 else -> Unit
             }
         }
+
+        delay(3000)
+        snackbarHostState.currentSnackbarData?.dismiss()
     }
+
+
     Column(Modifier.fillMaxSize()){
         TopAppBar(
             title = {
