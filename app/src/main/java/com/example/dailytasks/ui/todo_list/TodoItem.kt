@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,13 +60,9 @@ fun TodoItem(
                         }
                     },
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Light,
                     color = textColor
                 )
-            }
-            todo.description?.let {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = it, color = textColor)
             }
         }
         Checkbox(
@@ -72,7 +70,10 @@ fun TodoItem(
             onCheckedChange = { isChecked ->
                 onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
                 isDone = isChecked
-            }
+            },
+            colors = CheckboxDefaults.colors(
+                checkedColor = if (isDone) Color.Green else LocalContentColor.current
+            )
         )
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -49,11 +50,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.dailytasks.R
 import com.example.dailytasks.ui.todo_list.TodoListEvent
 import com.example.dailytasks.ui.todo_list.TodoListViewModel
 import com.example.dailytasks.util.UiEvent
@@ -101,16 +105,22 @@ fun TodoListScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = "All Tasks    ",
+                    text = "All Tasks        ",
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.CenterHorizontally),
-                    fontSize = 40.sp
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Light
                 )
             },
             navigationIcon = {
                 IconButton(onClick = { /* Handle navigation icon click */ }) {
-                    Icon(Icons.Default.Menu, contentDescription = "Menu")
+                    Icon(
+                        painter = painterResource(R.drawable.nav_bar_icon),
+                        contentDescription = "Menu",
+                        tint = myThemeColor,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             },
             modifier = Modifier.fillMaxWidth()
