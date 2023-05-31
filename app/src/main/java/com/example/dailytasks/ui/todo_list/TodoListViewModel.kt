@@ -69,7 +69,7 @@ class TodoListViewModel @Inject constructor(private val repository: TodoReposito
             else -> {}
         }
     }
-    private fun sendUiEvent(event: UiEvent) {
+    fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {
             _uiEvent.send(event)
         }

@@ -111,10 +111,6 @@ fun TodoListScreen(
     }
 
 
-
-
-
-
     Column(Modifier.fillMaxSize()){
         TopAppBar(
             title = {
@@ -175,7 +171,7 @@ fun TodoListScreen(
                                     viewModel.onEvent(TodoListEvent.OnTodoClick(todo))
                                 }
                                 .padding(16.dp),
-                            textColor = Color.Black, // Specify the desired text color
+                            textColor1 = Color.Black, // Specify the desired text color
                             checkedColor = Color.Green, // Specify the desired checked color
                             checkmarkColor = Color.White, // Specify the desired checkmark color
                             disabledColor = Color.LightGray // Specify the desired disabled color

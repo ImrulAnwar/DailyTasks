@@ -40,12 +40,13 @@ fun TodoItem(
     todo: Todo,
     onEvent: (TodoListEvent) -> Unit,
     modifier: Modifier = Modifier,
-    textColor: Color,
+    textColor1: Color,
     checkedColor: Color,
     checkmarkColor: Color,
     disabledColor: Color
 ) {
-
+    val textColor = if (todo.isDone) Color.Gray else Color.Black
+    val textDecoration = if (todo.isDone) TextDecoration.LineThrough else null
     Row(
         modifier = modifier.padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -59,7 +60,7 @@ fun TodoItem(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None)) {
+                        withStyle(style = SpanStyle(textDecoration = textDecoration)) {
                             append(todo.title)
                         }
                     },
