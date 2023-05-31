@@ -8,6 +8,9 @@ import com.example.dailytasks.util.Routes
 import com.example.dailytasks.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +21,15 @@ class TodoListViewModel @Inject constructor(private val repository: TodoReposito
     val uiEvent = _uiEvent.receiveAsFlow()
     val todos = repository.getAllTodo()
     private var deletedTodo: Todo? = null
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+    init{
+        viewModelScope.launch {
+            delay(1000)
+            _isLoading.value = false
+        }
+    }
 
     fun onEvent(event: TodoListEvent) {
         when(event) {

@@ -3,9 +3,12 @@ package com.example.dailytasks
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,15 +18,20 @@ import androidx.navigation.navArgument
 import com.example.dailytasks.ui.add_edit_todo.AddEditTodoScreen
 import com.example.dailytasks.ui.theme.DailyTasksTheme
 import com.example.dailytasks.ui.todo_list.TodoListScreen
+import com.example.dailytasks.ui.todo_list.TodoListViewModel
 import com.example.dailytasks.util.Routes
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: TodoListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Disable night mode for the entire app
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { viewModel.isLoading.value }
+        }
 
         setContent {
             DailyTasksTheme {
