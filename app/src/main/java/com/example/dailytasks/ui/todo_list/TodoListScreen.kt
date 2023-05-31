@@ -158,7 +158,7 @@ fun TodoListScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(todos.value) { todo ->
+                items(todos.value.sortedBy { it.isDone }) { todo ->
                     var offsetX by remember { mutableStateOf(0f) }
                     val dismissThreshold = 100.dp
 
@@ -190,11 +190,17 @@ fun TodoListScreen(
                                 .clickable {
                                     viewModel.onEvent(TodoListEvent.OnTodoClick(todo))
                                 }
-                                .padding(16.dp)
+                                .padding(16.dp),
+                            textColor = Color.Black, // Specify the desired text color
+                            checkedColor = Color.Green, // Specify the desired checked color
+                            checkmarkColor = Color.White, // Specify the desired checkmark color
+                            disabledColor = Color.LightGray // Specify the desired disabled color
                         )
                     }
                 }
             }
+
+
 
 
 

@@ -1,6 +1,7 @@
 package com.example.dailytasks.ui.todo_list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -36,14 +38,16 @@ import com.example.dailytasks.data.Todo
 fun TodoItem(
     todo: Todo,
     onEvent: (TodoListEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textColor: Color,
+    checkedColor: Color,
+    checkmarkColor: Color,
+    disabledColor: Color
 ) {
-    var isDone by remember { mutableStateOf(todo.isDone) }
-    val textDecoration = if (isDone) TextDecoration.LineThrough else null
-    val textColor = if (isDone) Color.Gray else Color.Black
+
     Row(
         modifier = modifier.padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
             modifier = Modifier.weight(1f),
@@ -52,10 +56,9 @@ fun TodoItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(textDecoration = textDecoration)) {
+                        withStyle(style = SpanStyle(textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None)) {
                             append(todo.title)
                         }
                     },
@@ -69,10 +72,10 @@ fun TodoItem(
             checked = todo.isDone,
             onCheckedChange = { isChecked ->
                 onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
-                isDone = isChecked
             },
             colors = CheckboxDefaults.colors(
-                checkedColor = if (isDone) Color.Green else LocalContentColor.current
+                checkedColor = checkedColor,
+                checkmarkColor = checkmarkColor
             )
         )
     }
