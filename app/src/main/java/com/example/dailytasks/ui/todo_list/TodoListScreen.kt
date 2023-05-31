@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -161,27 +163,9 @@ fun TodoListScreen(
                 items(todos.value.sortedBy { it.isDone }) { todo ->
                     var offsetX by remember { mutableStateOf(0f) }
                     val dismissThreshold = 100.dp
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .pointerInput(Unit) {
-                                detectDragGestures { change, dragAmount ->
-                                    offsetX += dragAmount.x
-                                    when {
-                                        offsetX > dismissThreshold.toPx() -> {
-                                            // Swiped to dismiss, handle the dismiss event here
-                                            viewModel.onEvent(TodoListEvent.OnDeleteTodoClick(todo))
-                                        }
-                                        offsetX < -dismissThreshold.toPx() -> {
-                                            // Swiped in the opposite direction, reset the offset
-                                            offsetX = 0f
-                                        }
-                                    }
-                                    change.consumePositionChange()
-                                }
-                            }
-                            .offset { IntOffset(offsetX.roundToInt(), 0) }
                     ) {
                         TodoItem(
                             todo = todo,
